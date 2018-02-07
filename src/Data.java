@@ -66,5 +66,19 @@ class Currency{
 		this.transferEnabled= transferEnabled;
 	}
 }
+class Balance{
+	String currency;
+	double available;
+	double reserved;
+	
+	public Balance(String currency, String available, String reserved) {
+		this.currency= currency;
+		this.available= Double.valueOf(available);
+		this.reserved= Double.valueOf(reserved);
+	}
+	public void Info() {
+		System.out.println("--"+this.currency+"\nAva:"+ this.available+"\nRes:"+this.reserved);
+	}
+}
 
 
