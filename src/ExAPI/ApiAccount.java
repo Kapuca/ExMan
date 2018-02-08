@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Base64;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 import structures.*;
@@ -18,17 +19,23 @@ public abstract class ApiAccount {
 		this.username= username;
 		this.password= password;
 	}
+	public ApiAccount() {
+		this(null, null);
+	}
+
+	//Setters and getters
 	public void setUsername(String username) {
 		this.username= username;
 	}
-	
 	public void	setPassword(String password) {
 		this.password= password;
 		
 	}
-	protected String getHTTPAuth() {
+
+
+	protected String getHTTPAuth() throws ConnectionException {
 		if (this.username==null) {
-//			throw new ;
+			throw new ConnectionException("Set API Keys");
 		}
 		String userpass = this.username + ":" + this.password;
 		return new String(Base64.getEncoder().encode(userpass.getBytes()));
@@ -62,6 +69,28 @@ public abstract class ApiAccount {
 		return null;
 	}
 	
-	public abstract Balance[] getBalance() throws ConnectionException;
+	/*
+	 * Public methods
+	 */
+	public abstract List<Pair> getPairs() throws ConnectionException;
+	public abstract Pair getPair(String pairId) throws ConnectionException;
+	
+	public abstract Currency[] getCurrency() throws ConnectionException;
+	public abstract Currency getCurrency(String curren) throws ConnectionException;
+	
+	public abstract Ticker[] getTicker() throws ConnectionException;
+	public abstract Ticker getTicker(String pairId) throws ConnectionException;
+	
+	public abstract PublicTrade[] getPublicTrades(String pairId) throws ConnectionException;
+	public abstract Orderbook getOrderbook(String pairId) throws ConnectionException;
+	public abstract Candle[] getCandle(String pairId) throws ConnectionException;
+	
+	/*
+	 * Account methods
+	 */
+	public abstract List<Balance> getBalance() throws ConnectionException;	
+	public abstract Balance getBalance(String currency) throws ConnectionException;
+	
+	
 }
 
