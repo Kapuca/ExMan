@@ -1,3 +1,4 @@
+package structures;
 
 public class Data{
 	
@@ -41,43 +42,6 @@ class Symbol {
 	public void Info(){
 		System.out.println("Trading pair: "+ this.baseCurrency+"/"+this.quoteCurrency+
 							"\nMin buy: "+ this.quantityIncrement);
-	}
-}
-class Currency{
-	String id;
-	String fullName;
-	boolean crypto;
-	boolean payinEnabled;
-	boolean payinPaymentId;
-	int payinConfirmations;
-	boolean payoutEnabled;
-	boolean payoutIsPaymentId;
-	boolean transferEnabled;
-	
-	public Currency(String id, String fullName, boolean crypto, boolean payinEnabled, boolean payinPaymentId, int payinConfirmations, boolean payoutEnabled, boolean payoutIsPaymentId, boolean transferEnabled) {
-		this.id= id;
-		this.fullName= fullName;
-		this.crypto= crypto;
-		this.payinEnabled= payinEnabled;
-		this.payinPaymentId= payinPaymentId;
-		this.payinConfirmations= payinConfirmations;
-		this.payoutEnabled= payoutEnabled;
-		this.payoutIsPaymentId= payoutIsPaymentId;
-		this.transferEnabled= transferEnabled;
-	}
-}
-class Balance{
-	String currency;
-	double available;
-	double reserved;
-	
-	public Balance(String currency, String available, String reserved) {
-		this.currency= currency;
-		this.available= Double.valueOf(available);
-		this.reserved= Double.valueOf(reserved);
-	}
-	public void Info() {
-		System.out.println("--"+this.currency+"\nAva:"+ this.available+"\nRes:"+this.reserved);
 	}
 }
 
