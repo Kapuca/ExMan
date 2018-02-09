@@ -26,77 +26,91 @@ public class HitBTC extends ApiAccount{
 
 	@Override
 	public List<Pair> getPairs() throws ConnectionException {
-		// TODO Auto-generated method stub
+		HttpsURLConnection conn= makeConn("public/symbol", false);
+		
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));	
+			Gson gson= new Gson();
+			Type type = new TypeToken<ArrayList<Pair>>(){}.getType(); 
+			List<Pair> response= gson.fromJson(br.readLine(), type);
+			
+			conn.disconnect();
+			return response;
+			
+		} catch (IOException e) {
+			System.err.println(e);
+			e.printStackTrace();
+		}
 		return null;
 	}
 	@Override
 	public Pair getPair(String pairId) throws ConnectionException {
 		// TODO Auto-generated method stub
-		return null;
+		throw new ConnectionException("Not implemented");
 	}
 	@Override
 	public Currency[] getCurrency() throws ConnectionException {
 		// TODO Auto-generated method stub
-		return null;
+		throw new ConnectionException("Not implemented");
 	}
 	@Override
 	public Currency getCurrency(String curren) throws ConnectionException {
 		// TODO Auto-generated method stub
-		return null;
+		throw new ConnectionException("Not implemented");
 	}
 	@Override
 	public Ticker[] getTicker() throws ConnectionException {
 		// TODO Auto-generated method stub
-		return null;
+		throw new ConnectionException("Not implemented");
 	}
 	@Override
 	public Ticker getTicker(String pairId) throws ConnectionException {
 		// TODO Auto-generated method stub
-		return null;
+		throw new ConnectionException("Not implemented");
 	}
 	@Override
 	public PublicTrade[] getPublicTrades(String pairId) throws ConnectionException {
 		// TODO Auto-generated method stub
-		return null;
+		throw new ConnectionException("Not implemented");
 	}
 	@Override
 	public Orderbook getOrderbook(String pairId) throws ConnectionException {
 		// TODO Auto-generated method stub
-		return null;
+		throw new ConnectionException("Not implemented");
 	}
 	@Override
 	public Candle[] getCandle(String pairId) throws ConnectionException {
 		// TODO Auto-generated method stub
-		return null;
+		throw new ConnectionException("Not implemented");
 	}
 	@Override
 	public List<Balance> getBalance() throws ConnectionException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public Balance getBalance(String currency) throws ConnectionException {
-		List<Balance> Tarr, Aarr;
-
-		Aarr= getAccountBalance();
-		Tarr= getTradingBalance();
 		
-		System.out.println("T:"+Tarr.size()+"\nA:"+Aarr.size());
-		for (Balance balance : Aarr) {
-			boolean skip= false;
-			for (Balance Tbalance : Tarr) {
-				if (balance.currency.equals(Tbalance.currency)) {
+		List<Balance> abalance= getAccountBalance();
+		List<Balance> tbalance= getTradingBalance();
+		boolean skip=false;
+		for (Balance ab : abalance) {
+			for (Balance tb : tbalance) {
+				if (tb.currency.equals(ab.currency)) {
+					tb.available+= ab.available;
+					tb.reserved+= ab.reserved;
 					skip= true;
 					break;
 				}
 			}
-			if (!skip) balance.Info();
+			if (!skip) tbalance.add(ab);
+			skip= false;
 		}
-		return null;
+		return tbalance;
+	}
+	@Override
+	public Balance getBalance(String currency) throws ConnectionException {
+				
+		throw new ConnectionException("Not implemented");
 	}
 	public List<Balance> getTradingBalance() throws ConnectionException {
 		
-		HttpsURLConnection conn= makeConn("trading/balance");
+		HttpsURLConnection conn= makeConn("trading/balance", true);
 	
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));	
@@ -105,6 +119,7 @@ public class HitBTC extends ApiAccount{
 			List<Balance> response= gson.fromJson(br.readLine(), type);
 			
 			conn.disconnect();
+			response= cleanBalanceData(response);
 			return response;
 			
 		} catch (IOException e) {
@@ -115,7 +130,7 @@ public class HitBTC extends ApiAccount{
 	}
 	public List<Balance> getAccountBalance() throws ConnectionException {
 		
-		HttpsURLConnection conn= makeConn("account/balance");
+		HttpsURLConnection conn= makeConn("account/balance", true);
 	
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -124,7 +139,7 @@ public class HitBTC extends ApiAccount{
 			List<Balance> response= gson.fromJson(br.readLine(), type);
 			
 			conn.disconnect();
-			
+			response= cleanBalanceData(response);
 			return response;
 			
 		} catch (IOException e) {
@@ -133,6 +148,18 @@ public class HitBTC extends ApiAccount{
 		}
 		return null;
 		
+	}
+	private List<Balance> cleanBalanceData(List<Balance> response) {
+		
+		int i= 0;
+		while (i<response.size()) {
+			if (response.get(i).available==0 && response.get(i).reserved==0) {
+				response.remove(i);
+			}else {
+				i++;
+			}
+		}
+		return response;
 	}
 	
 

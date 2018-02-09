@@ -13,4 +13,5 @@ public class Balance{
 	public void Info() {
 		System.out.println("--"+this.currency+"\nAva:"+ this.available+"\nRes:"+this.reserved);
 	}
+
 }

@@ -2,7 +2,7 @@
  * 
  */
 /**
- * @author JanBoz
+ * @author Kapuca
  *
  */
 package ExAPI;

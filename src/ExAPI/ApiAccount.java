@@ -40,14 +40,17 @@ public abstract class ApiAccount {
 		String userpass = this.username + ":" + this.password;
 		return new String(Base64.getEncoder().encode(userpass.getBytes()));
 	}
-	protected HttpsURLConnection makeConn(String urlExtension) throws ConnectionException{
+	protected HttpsURLConnection makeConn(String urlExtension, boolean authorization) throws ConnectionException{
 		try {
 			URL url= new URL(ApiUrl+urlExtension);
 			HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
-			String basicAuth = "Basic " + getHTTPAuth();
-			conn.setRequestProperty ("Authorization", basicAuth);
+			if (authorization) {
+				String basicAuth = "Basic " + getHTTPAuth();
+				conn.setRequestProperty ("Authorization", basicAuth);
+			}
+			
 
 			if (conn.getResponseCode()==401) throw new ConnectionException("API keys not valid.");
 			if (conn.getResponseCode() != 200) {

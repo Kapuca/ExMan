@@ -35,6 +35,14 @@ public class Pair {
 	public Pair() {
 		this(null, null, null, 0, 0, 0, 0, null);
 	}
+	
+	public String getBaseCurrency() {
+		return this.baseCurrency;
+	}
+	public String getQuoteCurrency() {
+		return this.quoteCurrency;
+	}
+	
 	public void Info(){
 		System.out.println("Trading pair: "+ this.baseCurrency+"/"+this.quoteCurrency+
 							"\nMin buy: "+ this.quantityIncrement);
