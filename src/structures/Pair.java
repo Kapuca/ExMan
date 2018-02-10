@@ -10,18 +10,17 @@ public class Pair {
 	double provideLiquidityRate;
 	String feeCurrency;
 	
-	public Pair(String id, String baseCurrency, String quoteCurrency, String quantityIncrement, String tickSize, String takeLiquidityRate, String provideLiquidityRate, String feeCurrency){
-		this.id= id;
-		this.baseCurrency= baseCurrency;
-		this.quoteCurrency= quoteCurrency;
-		this.quantityIncrement= Double.valueOf(quantityIncrement);
-		this.tickSize= Double.valueOf(tickSize);
-		this.takeLiquidityRate= Double.valueOf(takeLiquidityRate);
-		this.provideLiquidityRate= Double.valueOf(provideLiquidityRate);
-		this.feeCurrency= feeCurrency;
+	public Pair(String id, String baseCurrency, String quoteCurrency,
+				String quantityIncrement, String tickSize, String takeLiquidityRate,
+				String provideLiquidityRate, String feeCurrency){
+		this(id, baseCurrency, quoteCurrency,
+			Double.valueOf(quantityIncrement), Double.valueOf(tickSize), Double.valueOf(takeLiquidityRate),
+			Double.valueOf(provideLiquidityRate), feeCurrency);
 		
 	}
-	public Pair(String id, String baseCurrency, String quoteCurrency, double quantityIncrement, double tickSize, double takeLiquidityRate, double provideLiquidityRate, String feeCurrency){
+	public Pair(String id, String baseCurrency, String quoteCurrency,
+				double quantityIncrement, double tickSize, double takeLiquidityRate,
+				double provideLiquidityRate, String feeCurrency){
 		this.id= id;
 		this.baseCurrency= baseCurrency;
 		this.quoteCurrency= quoteCurrency;

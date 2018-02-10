@@ -4,27 +4,48 @@ import java.util.List;
 
 import ExAPI.ConnectionException;
 import ExAPI.HitBTC;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
+import javafx.scene.input.MouseEvent;
 import structures.Balance;
 import structures.Pair;
+import structures.Ticker;
 
 public class Controller {
 	@FXML ListView<Label> PairList;
 	@FXML ListView<Label> BalanceList;
 	@FXML Tab PortfolioTab;
+	@FXML Label bottomLabel;
 	
 	HitBTC acc;
 	
 	@FXML
 	public void initialize() {
-		acc= new HitBTC("username","password");
+		acc= new HitBTC("user","pass");
 		try {
-			List<Pair> pairs= acc.getPairs();
-			for (int i=0; i<pairs.size(); i++) {
-				PairList.getItems().add(new Label(pairs.get(i).getBaseCurrency()+"/"+pairs.get(i).getQuoteCurrency()));
+			List<Pair> allpair= acc.getPairs();
+			for (Pair pairs : allpair) {
+				Label tmp= new Label(pairs.getBaseCurrency()+"/"+pairs.getQuoteCurrency());
+				tmp.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+					@Override
+					public void handle(MouseEvent event) {
+						Ticker ticker= null;
+						try {
+							ticker= acc.getTicker(tmp.getText().replaceAll("/", ""));
+						} catch (ConnectionException e) {
+							bottomLabel.setText("Could not load " + tmp.getText());
+//							e.printStackTrace();
+						}
+						bottomLabel.setText(tmp.getText()+" 24h change: "
+									+ ticker.getChange() + "% Price: "
+									+ ticker.getLast() + pairs.getQuoteCurrency());
+					}
+				});
+				PairList.getItems().add(tmp);
 			}
 		} catch (ConnectionException e) {
 			PairList.setEditable(false);
@@ -46,5 +67,6 @@ public class Controller {
 	public void addOnList() {
 		
 	}
+	
 
 }

@@ -1,4 +1,10 @@
-import gui.Gui;;
+import java.util.List;
+
+import ExAPI.ApiAccount;
+import ExAPI.ConnectionException;
+import ExAPI.HitBTC;
+import gui.Gui;
+import structures.Pair;;
 
 public class Shara {
 	public static void main(String[] args) {
@@ -30,10 +36,9 @@ public class Shara {
 //			}
 //		} catch (ConnectionException e) {
 //			System.err.println(e.getMessage());
-//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		
+//Gui testing
 		Gui gui = new Gui();
 		gui.main(args);
 		  
