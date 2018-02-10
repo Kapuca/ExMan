@@ -7,12 +7,14 @@ import ExAPI.HitBTC;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
 import structures.Balance;
 import structures.Pair;
 
 public class Controller {
 	@FXML ListView<Label> PairList;
 	@FXML ListView<Label> BalanceList;
+	@FXML Tab PortfolioTab;
 	
 	HitBTC acc;
 	
@@ -31,11 +33,12 @@ public class Controller {
 		try {
 			List<Balance> fullBalance= acc.getBalance();
 			for (int i=0; i<fullBalance.size(); i++) {
-				double total= fullBalance.get(i).available + fullBalance.get(i).reserved;
-				BalanceList.getItems().add(new Label(fullBalance.get(i).currency+": "+total));
+				BalanceList.getItems().add(new Label(fullBalance.get(i).currency+": "+fullBalance.get(i).getTotal()));
 			}
 		} catch (ConnectionException e) {
-			PairList.setEditable(false);
+			PortfolioTab.setDisable(true);
+			System.out.println("Portfolio set disabled");
+			
 			e.printStackTrace();
 		}
 	}

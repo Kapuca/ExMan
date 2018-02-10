@@ -10,6 +10,9 @@ public class Balance{
 		this.available= Double.valueOf(available);
 		this.reserved= Double.valueOf(reserved);
 	}
+	public double getTotal() {
+		return this.available + this.reserved;
+	}
 	public void Info() {
 		System.out.println("--"+this.currency+"\nAva:"+ this.available+"\nRes:"+this.reserved);
 	}
