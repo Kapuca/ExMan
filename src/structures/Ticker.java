@@ -14,7 +14,9 @@ public class Ticker {
 	double volume;
 	double volumeQuote;
 	String timestamp;
-
+	/*
+	 * Constructors
+	 */
 	public Ticker(String symbol, double ask, double bid,
 				double last, double open, double low,
 				double high, double volume, double volumeQuote, String timestamp) {
@@ -39,16 +41,75 @@ public class Ticker {
 	public Ticker() {
 		this(null, 0, 0, 0, 0, 0, 0, 0, 0, null);
 	}
-	
+	/*
+	 * Getters
+	 */
 	public String getSymbol() {
-		return this.symbol;
+		return symbol;
 	}
-	public double getOpen() {
-		return this.open;
+	public double getAsk() {
+		return ask;
+	}
+	public double getBid() {
+		return bid;
 	}
 	public double getLast() {
-		return this.last;
+		return last;
 	}
+	public double getOpen() {
+		return open;
+	}
+	public double getLow() {
+		return low;
+	}
+	public double getHigh() {
+		return high;
+	}
+	public double getVolume() {
+		return volume;
+	}
+	public double getVolumeQuote() {
+		return volumeQuote;
+	}
+	public String getTimestamp() {
+		return timestamp;
+	}
+	/*
+	 * Setters
+	 */
+	public void setSymbol(String symbol) {
+		this.symbol = symbol;
+	}
+	public void setAsk(double ask) {
+		this.ask = ask;
+	}
+	public void setBid(double bid) {
+		this.bid = bid;
+	}
+	public void setLast(double last) {
+		this.last = last;
+	}
+	public void setOpen(double open) {
+		this.open = open;
+	}
+	public void setLow(double low) {
+		this.low = low;
+	}
+	public void setHigh(double high) {
+		this.high = high;
+	}
+	public void setVolume(double volume) {
+		this.volume = volume;
+	}
+	public void setVolumeQuote(double volumeQuote) {
+		this.volumeQuote = volumeQuote;
+	}
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
+	}
+	/*
+	 * The rest
+	 */
 	public double getMargin() {
 		return this.ask - this.bid;
 	}
