@@ -4,6 +4,12 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import structures.*;
@@ -17,7 +23,11 @@ public class HitBTC extends ApiAccount{
 	public HitBTC() {
 		this(null, null);
 	}
-
+	/*
+	 * Public methods
+	 * (non-Javadoc)
+	 * @see ExAPI.ApiAccount#getPairs()
+	 */
 	@Override
 	public List<Pair> getPairs() throws ConnectionException {
 
@@ -68,8 +78,12 @@ public class HitBTC extends ApiAccount{
 	@Override
 	public List<PublicTrade> getPublicTrades(String pairId) throws ConnectionException {
 		Type type = new TypeToken<ArrayList<PublicTrade>>(){}.getType(); 
+		GsonBuilder gsonBuilder = new GsonBuilder();
+	    gsonBuilder.registerTypeAdapter(Boolean.class, new BooleanDeserializer());
+	    Gson gson = gsonBuilder.create();
 		@SuppressWarnings("unchecked")
-		List<PublicTrade> response= (List<PublicTrade>) getAll("public/publictrades", type);
+		List<PublicTrade> response= (List<PublicTrade>) getAll("public/trades/"+ pairId, type, gson);
+		
 		
 		return response;
 	}
@@ -80,14 +94,29 @@ public class HitBTC extends ApiAccount{
 		
 		return response;
 	}
+	public Orderbook getOrderbook(String pairId, int limit) throws ConnectionException {
+		return getOrderbook(pairId+ "?limit=" + limit);
+	}
 	@Override
 	public List<Candle> getCandle(String pairId) throws ConnectionException {
 		Type type = new TypeToken<ArrayList<Candle>>(){}.getType(); 
 		@SuppressWarnings("unchecked")
-		List<Candle> response= (List<Candle>) getAll("public/candle", type);
+		List<Candle> response= (List<Candle>) getAll("public/candles/"+ pairId, type);
 		
 		return response;
 	}
+	public List<Candle> getCandle(String pairId, int limit, String period) throws ConnectionException{
+		if (limit!=0) {
+			pairId+="?limit="+ limit;
+			if (period!=null) {
+				pairId+="&period="+period;
+			}
+		}else if(period!=null) {
+			pairId+="?period="+period;
+		}
+		return getCandle(pairId);
+	}
+	
 	/*
 	 * Account methods
 	 * (non-Javadoc)
@@ -163,10 +192,12 @@ public class HitBTC extends ApiAccount{
 		}
 		return response;
 	}
-
-
 	
-
-	
-	
+}
+class BooleanDeserializer implements JsonDeserializer<Boolean> {
+  @Override
+  public Boolean deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)throws JsonParseException {
+    String str = json.getAsString();
+    return (str.toUpperCase().equals("BUY") ? true : false);
+  }
 }

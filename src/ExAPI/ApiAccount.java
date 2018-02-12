@@ -54,14 +54,12 @@ public abstract class ApiAccount {
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
 			if (authorization) {
-				String basicAuth = "Basic " + getHTTPAuth();
-				conn.setRequestProperty ("Authorization", basicAuth);
+				conn.setRequestProperty ("Authorization", "Basic " + getHTTPAuth());
 			}
 			
 
 			if (conn.getResponseCode()==401) throw new ConnectionException("API keys not valid.");
 			if (conn.getResponseCode() != 200) {
-				
 				throw new ConnectionException("Failed : HTTP error code : "
 						+ conn.getResponseCode());
 			}
@@ -79,16 +77,17 @@ public abstract class ApiAccount {
 		return null;
 	}
 	
-	protected Object getAll(HttpsURLConnection conn, Type type) throws ConnectionException {
+	protected Object getAll(HttpsURLConnection conn, Type type, Gson customGson) throws ConnectionException {
 		BufferedReader br = null;
-		try { br = new BufferedReader(new InputStreamReader(conn.getInputStream()));}
-		catch (IOException e1) {
+		try {
+			br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		}catch (IOException e1) {
 			e1.printStackTrace();
 			throw new ConnectionException("Bad connection?");
 		}	
-		Gson gson= new Gson();
+		if (customGson==null)  customGson= new Gson();
 		try {
-			Object response= gson.fromJson(br.readLine(), type);
+			Object response= customGson.fromJson(br.readLine(), type);
 			return response;	
 		} catch (IOException e) {
 			System.err.println(e);
@@ -96,22 +95,18 @@ public abstract class ApiAccount {
 		}
 		return null;
 	}
-	protected Object getAll(String urlExtension, Type type) throws ConnectionException{
-		return getAll(urlExtension, false, type);
+	protected Object getAll(String urlExtension, Type type, Gson customGson) throws ConnectionException{
+		return getAll(urlExtension, false, type, customGson);
+	}
+	protected Object getAll(String urlExtension, Type type) throws ConnectionException {
+		return getAll(urlExtension, false, type, null);
+	}
+	protected Object getAll(String urlExtension, boolean auth, Type type, Gson customGson) throws ConnectionException {
+		HttpsURLConnection conn= makeConn(urlExtension, auth);
+		return getAll(conn, type, customGson);
 	}
 	protected Object getAll(String urlExtension, boolean auth, Type type) throws ConnectionException {
-		HttpsURLConnection conn= makeConn(urlExtension, auth);
-		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));	
-			Gson gson= new Gson();
-			Object response= gson.fromJson(br.readLine(), type);
-			conn.disconnect();
-			return response;	
-		} catch (IOException e) {
-			System.err.println(e);
-			e.printStackTrace();
-		}
-		return null;
+		return getAll(urlExtension, auth, type, null);
 	}
 	/*
 	 * Public methods
