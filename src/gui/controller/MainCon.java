@@ -1,4 +1,4 @@
-package gui;
+package gui.controller;
 
 import java.util.List;
 
@@ -10,21 +10,27 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import structures.Balance;
 import structures.Pair;
 import structures.Ticker;
 
-public class Controller {
+public class MainCon {
+	
+	@FXML AnchorPane main;
+	@FXML Chart chartController;
 	@FXML ListView<Label> PairList;
 	@FXML ListView<Label> BalanceList;
 	@FXML Tab PortfolioTab;
-	@FXML Label bottomLabel;
+	@FXML GuiFrame master;
+	
 	
 	HitBTC acc;
 	
 	@FXML
 	public void initialize() {
-		acc= new HitBTC("user","pass");
+		System.out.println(chartController);
+		acc= new HitBTC("498cf9df17aa3b42372b07354179900b", "1e1f9bb3fcc5d50a024bf2e80e874acc");
 		try {
 			List<Pair> allpair= acc.getPairs();
 			for (Pair pairs : allpair) {
@@ -37,11 +43,11 @@ public class Controller {
 						try {
 							ticker= acc.getTicker(tmp.getText().replaceAll("/", ""));
 						} catch (ConnectionException e) {
-							bottomLabel.setText("Could not load " + tmp.getText());
+							master.BottomLabel.setText("Could not load " + tmp.getText());
 //							e.printStackTrace();
 						}
-						bottomLabel.setText(tmp.getText()+" 24h change: "
-									+ ticker.getChange() + "% Price: "
+						master.BottomLabel.setText(tmp.getText()+" 24h change: "
+									+ ticker.getChange(true) + "% Price: "
 									+ ticker.getLast() + pairs.getQuoteCurrency());
 					}
 				});
@@ -58,14 +64,18 @@ public class Controller {
 			}
 		} catch (ConnectionException e) {
 			PortfolioTab.setDisable(true);
-			System.out.println("Portfolio set disabled");
-			
-			e.printStackTrace();
+			System.out.println("Portfolio set disabled. " + e.getMessage());
 		}
 	}
 	
 	public void addOnList() {
 		
+	}
+	
+	public void inject(GuiFrame guiFrame) {
+		this.master= guiFrame;
+		chartController.inject(guiFrame);
+		System.out.println("Inj in main.");
 	}
 	
 

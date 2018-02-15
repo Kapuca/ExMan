@@ -14,7 +14,8 @@ public class Gui extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Parent root= FXMLLoader.load(getClass().getResource("Main.fxml"));
+		System.out.println("Loading fxml...");
+		Parent root= FXMLLoader.load(getClass().getResource("fxml/GuiFrame.fxml"));
 		primaryStage.setTitle("ExMan");
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
