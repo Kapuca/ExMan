@@ -1,19 +1,21 @@
 package structures;
 
+import java.math.BigDecimal;
+
 public class Pair {
 	String id;
 	String baseCurrency;
 	String quoteCurrency;
-	double quantityIncrement;
-	double tickSize;
-	double takeLiquidityRate;
-	double provideLiquidityRate;
+	BigDecimal quantityIncrement;
+	BigDecimal tickSize;
+	BigDecimal takeLiquidityRate;
+	BigDecimal provideLiquidityRate;
 	String feeCurrency;
 	/*
 	 * Constrictors
 	 */
-	public Pair(String id, String baseCurrency, String quoteCurrency, double quantityIncrement, double tickSize,
-			double takeLiquidityRate, double provideLiquidityRate, String feeCurrency) {
+	public Pair(String id, String baseCurrency, String quoteCurrency, BigDecimal quantityIncrement, BigDecimal tickSize,
+			BigDecimal takeLiquidityRate, BigDecimal provideLiquidityRate, String feeCurrency) {
 		this.id = id;
 		this.baseCurrency = baseCurrency;
 		this.quoteCurrency = quoteCurrency;
@@ -26,7 +28,7 @@ public class Pair {
 
 
 	public Pair() {
-		this(null, null, null, 0, 0, 0, 0, null);
+		this(null, null, null, null, null, null, null, null);
 	}
 	/*
 	 * Getters
@@ -40,16 +42,16 @@ public class Pair {
 	public String getQuoteCurrency() {
 		return quoteCurrency;
 	}
-	public double getQuantityIncrement() {
+	public BigDecimal getQuantityIncrement() {
 		return quantityIncrement;
 	}
-	public double getTickSize() {
+	public BigDecimal getTickSize() {
 		return tickSize;
 	}
-	public double getTakeLiquidityRate() {
+	public BigDecimal getTakeLiquidityRate() {
 		return takeLiquidityRate;
 	}
-	public double getProvideLiquidityRate() {
+	public BigDecimal getProvideLiquidityRate() {
 		return provideLiquidityRate;
 	}
 	public String getFeeCurrency() {
@@ -67,16 +69,16 @@ public class Pair {
 	public void setQuoteCurrency(String quoteCurrency) {
 		this.quoteCurrency = quoteCurrency;
 	}
-	public void setQuantityIncrement(double quantityIncrement) {
+	public void setQuantityIncrement(BigDecimal quantityIncrement) {
 		this.quantityIncrement = quantityIncrement;
 	}
-	public void setTickSize(double tickSize) {
+	public void setTickSize(BigDecimal tickSize) {
 		this.tickSize = tickSize;
 	}
-	public void setTakeLiquidityRate(double takeLiquidityRate) {
+	public void setTakeLiquidityRate(BigDecimal takeLiquidityRate) {
 		this.takeLiquidityRate = takeLiquidityRate;
 	}
-	public void setProvideLiquidityRate(double provideLiquidityRate) {
+	public void setProvideLiquidityRate(BigDecimal provideLiquidityRate) {
 		this.provideLiquidityRate = provideLiquidityRate;
 	}
 	public void setFeeCurrency(String feeCurrency) {

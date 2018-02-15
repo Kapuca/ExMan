@@ -1,5 +1,6 @@
 package structures;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class Orderbook {
@@ -41,31 +42,31 @@ public class Orderbook {
 	}
 }
 class Offer{
-	double price;
-	double size;
+	BigDecimal price;
+	BigDecimal size;
 	/*
 	 * Constructors
 	 */
-	public Offer(double price, double size) {
+	public Offer(BigDecimal price, BigDecimal size) {
 		this.price = price;
 		this.size = size;
 	}
 	/*
 	 * Getters
 	 */
-	public double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
-	public double getSize() {
+	public BigDecimal getSize() {
 		return size;
 	}
 	/*
 	 * Setters
 	 */
-	public void setPrice(double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
-	public void setSize(double size) {
+	public void setSize(BigDecimal size) {
 		this.size = size;
 	}
 	/*

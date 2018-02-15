@@ -1,18 +1,20 @@
 package structures;
 
+import java.math.BigDecimal;
+
 public class Candle {
 	String timestamp;
-    double open;
-    double close;
-    double min;
-    double max;
-    double volume;
-    double volumeQuote;
+    BigDecimal open;
+    BigDecimal close;
+    BigDecimal min;
+    BigDecimal max;
+    BigDecimal volume;
+    BigDecimal volumeQuote;
     /*
      * Constructors
      */
-	public Candle(String timestamp, double open, double close, double min, double max, double volume,
-			double volumeQuote) {
+	public Candle(String timestamp, BigDecimal open, BigDecimal close, BigDecimal min, BigDecimal max, BigDecimal volume,
+			BigDecimal volumeQuote) {
 		this.timestamp = timestamp;
 		this.open = open;
 		this.close = close;
@@ -27,22 +29,22 @@ public class Candle {
 	public String getTimestamp() {
 		return timestamp;
 	}
-	public double getOpen() {
+	public BigDecimal getOpen() {
 		return open;
 	}
-	public double getClose() {
+	public BigDecimal getClose() {
 		return close;
 	}
-	public double getMin() {
+	public BigDecimal getMin() {
 		return min;
 	}
-	public double getMax() {
+	public BigDecimal getMax() {
 		return max;
 	}
-	public double getVolume() {
+	public BigDecimal getVolume() {
 		return volume;
 	}
-	public double getVolumeQuote() {
+	public BigDecimal getVolumeQuote() {
 		return volumeQuote;
 	}
 	/*
@@ -51,22 +53,22 @@ public class Candle {
 	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
 	}
-	public void setOpen(double open) {
+	public void setOpen(BigDecimal open) {
 		this.open = open;
 	}
-	public void setClose(double close) {
+	public void setClose(BigDecimal close) {
 		this.close = close;
 	}
-	public void setMin(double min) {
+	public void setMin(BigDecimal min) {
 		this.min = min;
 	}
-	public void setMax(double max) {
+	public void setMax(BigDecimal max) {
 		this.max = max;
 	}
-	public void setVolume(double volume) {
+	public void setVolume(BigDecimal volume) {
 		this.volume = volume;
 	}
-	public void setVolumeQuote(double volumeQuote) {
+	public void setVolumeQuote(BigDecimal volumeQuote) {
 		this.volumeQuote = volumeQuote;
 	}
 	/*

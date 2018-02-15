@@ -5,21 +5,21 @@ import java.math.RoundingMode;
 
 public class Ticker {
 	String symbol;
-	double ask;
-	double bid;
-	double last;
-	double open;
-	double low;
-	double high;
-	double volume;
-	double volumeQuote;
+	BigDecimal ask;
+	BigDecimal bid;
+	BigDecimal last;
+	BigDecimal open;
+	BigDecimal low;
+	BigDecimal high;
+	BigDecimal volume;
+	BigDecimal volumeQuote;
 	String timestamp;
 	/*
 	 * Constructors
 	 */
-	public Ticker(String symbol, double ask, double bid,
-				double last, double open, double low,
-				double high, double volume, double volumeQuote, String timestamp) {
+	public Ticker(String symbol, BigDecimal ask, BigDecimal bid,
+				BigDecimal last, BigDecimal open, BigDecimal low,
+				BigDecimal high, BigDecimal volume, BigDecimal volumeQuote, String timestamp) {
 		this.symbol= symbol;
 		this.ask= ask;
 		this.bid= bid;
@@ -31,15 +31,9 @@ public class Ticker {
 		this.volumeQuote= volumeQuote;
 		this.timestamp= timestamp;
 	}
-	public Ticker(String symbol, String ask, String bid,
-			String last, String open, String low,
-			String high, String volume, String volumeQuote, String timestamp) {
-		this(symbol, Double.valueOf(ask), Double.valueOf(bid), Double.valueOf(last),
-			Double.valueOf(open), Double.valueOf(low), Double.valueOf(high),
-			Double.valueOf(volume), Double.valueOf(volumeQuote), timestamp);
-	}
+	
 	public Ticker() {
-		this(null, 0, 0, 0, 0, 0, 0, 0, 0, null);
+		this(null, null, null, null, null, null, null, null, null, null);
 	}
 	/*
 	 * Getters
@@ -47,32 +41,56 @@ public class Ticker {
 	public String getSymbol() {
 		return symbol;
 	}
-	public double getAsk() {
+	public BigDecimal getAsk() {
 		return ask;
 	}
-	public double getBid() {
+	public BigDecimal getBid() {
 		return bid;
 	}
-	public double getLast() {
+	public BigDecimal getLast() {
 		return last;
 	}
-	public double getOpen() {
+	public BigDecimal getOpen() {
 		return open;
 	}
-	public double getLow() {
+	public BigDecimal getLow() {
 		return low;
 	}
-	public double getHigh() {
+	public BigDecimal getHigh() {
 		return high;
 	}
-	public double getVolume() {
+	public BigDecimal getVolume() {
 		return volume;
 	}
-	public double getVolumeQuote() {
+	public BigDecimal getVolumeQuote() {
 		return volumeQuote;
 	}
 	public String getTimestamp() {
 		return timestamp;
+	}
+	//Extra
+	public BigDecimal getDiff(BigDecimal open, BigDecimal close) {
+		return close.subtract(open);
+	}
+	public BigDecimal getPecent(BigDecimal open, BigDecimal close) {
+		try {
+			return close.multiply(BigDecimal.valueOf(100))
+					.divide(open, 2, RoundingMode.HALF_UP)
+					.subtract(BigDecimal.valueOf(100));
+		} catch (Exception e) {
+			return null;
+		}
+
+	    
+	}
+	
+	public BigDecimal getMargin(boolean percent) {
+		if (percent) return getPecent(this.bid, this.ask);
+		return getDiff(this.bid, this.ask);
+	}
+	public BigDecimal getChange(boolean percent) {
+		if (percent) return getPecent(this.open, this.last);
+		return getDiff(this.open, this.last);
 	}
 	/*
 	 * Setters
@@ -80,28 +98,28 @@ public class Ticker {
 	public void setSymbol(String symbol) {
 		this.symbol = symbol;
 	}
-	public void setAsk(double ask) {
+	public void setAsk(BigDecimal ask) {
 		this.ask = ask;
 	}
-	public void setBid(double bid) {
+	public void setBid(BigDecimal bid) {
 		this.bid = bid;
 	}
-	public void setLast(double last) {
+	public void setLast(BigDecimal last) {
 		this.last = last;
 	}
-	public void setOpen(double open) {
+	public void setOpen(BigDecimal open) {
 		this.open = open;
 	}
-	public void setLow(double low) {
+	public void setLow(BigDecimal low) {
 		this.low = low;
 	}
-	public void setHigh(double high) {
+	public void setHigh(BigDecimal high) {
 		this.high = high;
 	}
-	public void setVolume(double volume) {
+	public void setVolume(BigDecimal volume) {
 		this.volume = volume;
 	}
-	public void setVolumeQuote(double volumeQuote) {
+	public void setVolumeQuote(BigDecimal volumeQuote) {
 		this.volumeQuote = volumeQuote;
 	}
 	public void setTimestamp(String timestamp) {
@@ -110,14 +128,11 @@ public class Ticker {
 	/*
 	 * The rest
 	 */
-	public double getMargin() {
-		return this.ask - this.bid;
+	public void Info() {
+		System.out.println(symbol+ " " + getChange(true) + "% Margin:"+(bid!=null && ask!=null ? getMargin(true) : "--") + "%");
 	}
-	public double getChange() {
-		BigDecimal bd = new BigDecimal(this.last*100/this.open-100);
-	    bd = bd.setScale(2, RoundingMode.HALF_UP);
-	    return bd.doubleValue();
-	}
+
+
 
 		
 }
